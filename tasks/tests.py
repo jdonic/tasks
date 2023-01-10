@@ -61,3 +61,18 @@ class TaskTest(TestCase):
         self.assertContains(response, "Fix the car")
         self.assertContains(response, "Fix the car so I can go to Croatia.")
         self.assertTemplateUsed(response, "tasks/task_detail.html")
+
+    def test_task_create_view(self) -> None:
+        response = self.client.post(
+            reverse("task_new"),
+            {
+                "title": "New task",
+                "description": "New description",
+                "due_date": datetime.date(2069, 6, 9),
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Task.objects.last().title, "New task")
+        self.assertEqual(Task.objects.last().description, "New description")
+        self.assertFalse(self.task.is_completed)
+        self.assertIsNone(self.task.completed_at)
