@@ -1,0 +1,10 @@
+<!-- templates/task_new.html -->
+{% extends "_base.html" %}
+{% block title %}New Task{% endblock title %}
+{% block content %}
+    <h1>New Task</h1>
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+    <input type="submit" value="Save">
+    </form>
+{% endblock content %}
