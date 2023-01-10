@@ -1,0 +1,13 @@
+body {
+    min-height: 75rem;
+    padding-top: 4.5rem;
+}
+
+.task_list {
+    padding-top: 1.5rem;
+}
+
+.task_list a {
+    color: inherit;
+    text-decoration: inherit;
+}

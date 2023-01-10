@@ -1,12 +1,17 @@
 <!-- templates/tasks/task_list.html -->
 {% extends "_base.html" %}
+{% load static %}
+<!-- CSS -->
+<link rel="stylesheet" href="{% static 'css/task_list.css' %}">
 {% block title %}Tasks{% endblock title %}
 {% block content %}
     {% for task in task_list %}
-        <div>
+        <div class="task_list">
             {% if task.is_completed %}
-                <h2><strike><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></strike></h2>
-                <p>Completed at: {{ task.completed_at }}</p>
+                <div class="task_completed">
+                    <s><h2><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></h2></s>
+                    <p>Completed at: {{ task.completed_at }}</p>
+                </div>
             {% else %}
                 <h2><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></h2>
                 <form method="post" action="{% url 'task_list'%}">
