@@ -5,10 +5,10 @@
     {% for task in task_list %}
         <div>
             {% if task.is_completed %}
-                <h2><strike>{{ task.title }}</strike></h2>
+                <h2><strike><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></strike></h2>
                 <p>Completed at: {{ task.completed_at }}</p>
             {% else %}
-                <h2>{{ task.title }}</h2>
+                <h2><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></h2>
                 <form method="post" action="{% url 'task_list'%}">
                     {% csrf_token %}
                     <input type="hidden" name="task_id" value="{{ task.id }}">
