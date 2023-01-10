@@ -1,0 +1,10 @@
+<!-- templates/tasks/task_detail.html -->
+{% extends "_base.html" %}
+{% block title %}{{ object.title }}{% endblock title %}
+{% block content %}
+    <div class="task_detail">
+        <h2>{{ task.title }}</h2>
+        <p>Description: {{ task.description }}</p>
+        <p>Due date: {{ task.due_date }}</p>
+    </div>
+{% endblock content %}
