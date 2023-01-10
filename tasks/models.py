@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 class Task(models.Model):
@@ -16,3 +17,6 @@ class Task(models.Model):
         self.is_completed = True
         self.completed_at = timezone.now()
         self.save()
+
+    def get_absolute_url(self) -> None:
+        return reverse("task_detail", args=[str(self.id)])

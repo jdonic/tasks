@@ -6,6 +6,7 @@ import datetime
 
 from .models import Task
 
+
 class TaskTest(TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
@@ -51,3 +52,12 @@ class TaskTest(TestCase):
         self.assertEqual(tasks[0], self.task_2)
         self.assertEqual(tasks[1], self.task)
         self.assertEqual(tasks[2], self.task_3)
+
+    def test_task_detail_view(self) -> None:
+        response = self.client.get(self.task.get_absolute_url())
+        no_response = self.client.get("/tasks/12345/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(no_response.status_code, 404)
+        self.assertContains(response, "Fix the car")
+        self.assertContains(response, "Fix the car so I can go to Croatia.")
+        self.assertTemplateUsed(response, "tasks/task_detail.html")
