@@ -6,5 +6,12 @@
         <h2>{{ task.title }}</h2>
         <p>Description: {{ task.description }}</p>
         <p>Due date: {{ task.due_date }}</p>
+        {% if not task.is_completed %}
+            <form method="post" action="{% url 'task_detail' task.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="task_id" value="{{ task.id }}">
+                <input type="submit" value="Mark as completed">
+            </form>
+        {% endif %}
     </div>
 {% endblock content %}

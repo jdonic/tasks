@@ -9,6 +9,11 @@
                 <p>Completed at: {{ task.completed_at }}</p>
             {% else %}
                 <h2>{{ task.title }}</h2>
+                <form method="post" action="{% url 'task_list'%}">
+                    {% csrf_token %}
+                    <input type="hidden" name="task_id" value="{{ task.id }}">
+                    <input type="submit" value="Mark as completed">
+                </form>
             {% endif %}
         </div>
     {% endfor %}

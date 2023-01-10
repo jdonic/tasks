@@ -1,6 +1,8 @@
 from django.views.generic import ListView, DetailView, CreateView
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import Form
+from django.http import HttpRequest
+from typing import Any
 
 import datetime
 
@@ -13,11 +15,31 @@ class TaskListView(ListView):
     template_name = "tasks/task_list.html"
     ordering = ["due_date"]
 
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+
+        # Get the task ID from the POST data
+        task_id = request.POST.get("task_id")
+        # Mark the task as completed
+        task = get_object_or_404(Task, id=task_id)
+        task.mark_completed()
+
+        return redirect("task_list")
+
 
 class TaskDetailView(DetailView):
     model = Task
     context_object_name = "task"
     template_name = "tasks/task_detail.html"
+
+    def post(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+        # Get the task ID from the POST data
+        task_id = request.POST.get("task_id")
+
+        # Mark the task as completed
+        task = get_object_or_404(Task, id=task_id)
+        task.mark_completed()
+
+        return redirect("task_detail", pk=task_id)
 
 
 class TaskCreateView(CreateView):
