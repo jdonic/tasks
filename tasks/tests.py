@@ -62,7 +62,7 @@ class TaskTest(TestCase):
         self.assertContains(response, "Fix the car so I can go to Croatia.")
         self.assertTemplateUsed(response, "tasks/task_detail.html")
 
-    def test_task_create_view(self) -> None:
+    def test_task_create_view_valid_data(self) -> None:
         response = self.client.post(
             reverse("task_new"),
             {
@@ -76,3 +76,29 @@ class TaskTest(TestCase):
         self.assertEqual(Task.objects.last().description, "New description")
         self.assertFalse(self.task.is_completed)
         self.assertIsNone(self.task.completed_at)
+
+    def test_task_create_view_invalid_data(self) -> None:
+        response = self.client.post(
+            reverse("task_new"),
+            {
+                "title": "",
+                "description": "",
+                "due_date": datetime.date(2069, 6, 9),
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(response, "form", "title", "This field is required.")
+        self.assertFormError(response, "form", "description", "This field is required.")
+
+        response = self.client.post(
+            reverse("task_new"),
+            {
+                "title": "New task",
+                "description": "New description",
+                "due_date": datetime.date(2000, 1, 1),
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response, "form", "due_date", "The due date must be in the future"
+        )
