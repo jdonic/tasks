@@ -1,10 +1,12 @@
 <!-- templates/task_new.html -->
 {% extends "_base.html" %}
+{% load crispy_forms_tags %}
+
 {% block title %}New Task{% endblock title %}
 {% block content %}
     <h1>New Task</h1>
     <form action="" method="post">{% csrf_token %}
-        {{ form.as_p }}
+        {{ form|crispy }}
     <input type="submit" value="Save">
     </form>
 {% endblock content %}
