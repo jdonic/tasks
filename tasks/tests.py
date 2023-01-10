@@ -139,3 +139,11 @@ class TaskTest(TestCase):
         self.assertAlmostEqual(
             self.task.completed_at, timezone.now(), delta=timezone.timedelta(seconds=1)
         )
+
+    def test_clicking_task_title_redirects_to_detail_page(self) -> None:
+        response = self.client.get(reverse("task_list"))
+        self.assertContains(
+            response, f'href="{reverse("task_detail", args=[self.task.pk])}'
+        )
+        detail_response = self.client.get(reverse("task_detail", args=[self.task.pk]))
+        self.assertEqual(detail_response.status_code, 200)
