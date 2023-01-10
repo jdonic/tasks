@@ -102,3 +102,40 @@ class TaskTest(TestCase):
         self.assertFormError(
             response, "form", "due_date", "The due date must be in the future"
         )
+
+    def test_mark_task_as_completed_list(self) -> None:
+        self.assertFalse(self.task.is_completed)
+        self.assertIsNone(self.task.completed_at)
+
+        # Simulate a user submitting a POST request to mark the task as completed
+        response = self.client.post(reverse("task_list"), {"task_id": self.task.id})
+
+        # Refresh the task from the database
+        self.task.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.task.is_completed)
+        self.assertIsNotNone(self.task.completed_at)
+        self.assertAlmostEqual(
+            self.task.completed_at, timezone.now(), delta=timezone.timedelta(seconds=1)
+        )
+
+    def test_mark_task_as_completed_detail_view(self) -> None:
+
+        self.assertFalse(self.task.is_completed)
+        self.assertIsNone(self.task.completed_at)
+
+        # Simulate a user submitting a POST request to mark the task as completed
+        response = self.client.post(
+            reverse("task_detail", args=[self.task.id]), {"task_id": self.task.id}
+        )
+
+        # Refresh the task from the database
+        self.task.refresh_from_db()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(self.task.is_completed)
+        self.assertIsNotNone(self.task.completed_at)
+        self.assertAlmostEqual(
+            self.task.completed_at, timezone.now(), delta=timezone.timedelta(seconds=1)
+        )
