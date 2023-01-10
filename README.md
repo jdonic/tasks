@@ -11,7 +11,11 @@ Build the Docker images and run the containers:
 
 `docker-compose up -d --build`
 
-After running the container, you can access the application in [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+Before running project do not forget to migrate the database:
+
+`docker-compose exec web python manage.py migrate`
+
+After running the container and migrating database, you can access the application in [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
 
 To run the tests and linters execute:
 
