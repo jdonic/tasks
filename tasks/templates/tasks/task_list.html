@@ -1,0 +1,15 @@
+<!-- templates/tasks/task_list.html -->
+{% extends "_base.html" %}
+{% block title %}Tasks{% endblock title %}
+{% block content %}
+    {% for task in task_list %}
+        <div>
+            {% if task.is_completed %}
+                <h2><strike>{{ task.title }}</strike></h2>
+                <p>Completed at: {{ task.completed_at }}</p>
+            {% else %}
+                <h2>{{ task.title }}</h2>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endblock content %}
