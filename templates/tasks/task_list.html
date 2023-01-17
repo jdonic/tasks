@@ -14,6 +14,9 @@
                 </div>
             {% else %}
                 <h2><a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a></h2>
+                {% if task.is_due %}
+                    <p>Late!</p>
+                {% endif %}
                 <form method="post" action="{% url 'task_list'%}">
                     {% csrf_token %}
                     <input type="hidden" name="task_id" value="{{ task.id }}">

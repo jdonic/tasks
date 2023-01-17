@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.forms import Form
 from django.http import HttpRequest
 from typing import Any
+from django.db.models import Q
 
 import datetime
 
@@ -24,6 +25,11 @@ class TaskListView(ListView):
         task.mark_completed()
 
         return redirect("task_list")
+
+    def get_queryset(self) -> None:
+        return Task.objects.all().annotate(
+            is_due=Q(due_date__lt=datetime.datetime.now())
+        )
 
 
 class TaskDetailView(DetailView):
